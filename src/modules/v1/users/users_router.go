@@ -15,5 +15,7 @@ func New(rt *mux.Router, db *gorm.DB) {
 
 	route.HandleFunc("/", ctrl.GetAll).Methods("GET")
 	route.HandleFunc("/save", ctrl.Add).Methods("POST")
+	route.HandleFunc("/delete/{user_id}", ctrl.Delete).Methods("DELETE")
+	route.HandleFunc("/update/{user_id}", ctrl.Update).Methods("PUT")
 
 }

@@ -37,3 +37,23 @@ func (r *users_service) Add(data *models.User) (*models.User, error) {
 	}
 	return data, nil
 }
+func (r *users_service) DeleteData(data *models.User, params string) (*models.User, error) {
+	data, err := r.repo.Delete(data, params)
+	if data != nil {
+		fmt.Println("Data Terhapus")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+func (r *users_service) UpdateData(data *models.User, params string) (*models.User, error) {
+	data, err := r.repo.Update(data, params)
+	if data != nil {
+		fmt.Println("Data Terupdate")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
