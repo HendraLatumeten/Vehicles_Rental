@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Vehicle struct {
-	Vehicles_id   uint      `gorm:"primaryKey" json:"vehicles_id"`
+	Vehicles_id   uint      `gorm:"primaryKey;autoIncrement:false"`
 	Name          string    `json:"name"`
 	Type_vehicles string    `json:"type_vehicles"`
 	City          string    `json:"city"`
@@ -13,4 +13,4 @@ type Vehicle struct {
 	Updated_at    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
-type Vehicles []User
+type Vehicles []Vehicle

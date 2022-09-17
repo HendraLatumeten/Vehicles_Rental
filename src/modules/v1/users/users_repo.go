@@ -46,13 +46,9 @@ func (r *users_repo) Delete(data *models.User, params string) (*models.User, err
 	return data, nil
 }
 func (r *users_repo) Update(data *models.User, params string) (*models.User, error) {
-	// if r.db.Model(&data).Where("user_id = ?", params).Updates(&data).RowsAffected == 0 {
-	// 	r.db.Create(&data)
-	// }
-
 	result := r.db.Model(&data).Where("user_id = ?", params).Updates(&data)
 	if result.Error != nil {
-		return nil, errors.New("gagal Menghapus data")
+		return nil, errors.New("gagal Mengupdate data")
 	}
 	r.db.Create(&data)
 	return data, nil

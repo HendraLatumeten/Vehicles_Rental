@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm"
 	"github.com/hendralatumeten/vehicles_rental/src/modules/v1/users"
+	"github.com/hendralatumeten/vehicles_rental/src/modules/v1/vehicles"
 )
 
 func New() (*mux.Router, error) {
@@ -15,6 +16,7 @@ func New() (*mux.Router, error) {
 		return nil, errors.New("gagal init database")
 	}
 	users.New(mainRoute, db)
+	vehicles.New(mainRoute, db)
 
 	return mainRoute, nil
 }
