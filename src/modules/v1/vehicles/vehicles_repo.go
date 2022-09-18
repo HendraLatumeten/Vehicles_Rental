@@ -2,6 +2,7 @@ package vehicles
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"gorm.io/gorm"
@@ -55,6 +56,43 @@ func (r *vehicles_repo) Update(data *models.Vehicle, params string) (*models.Veh
 	// if id == params {
 	// 	return nil, errors.New("id sudah terpakai")
 	// }
+	//result := r.db.Order(params).Find(&data)
 	r.db.Create(&data)
 	return data, nil
+}
+
+//sort and search
+func (r *vehicles_repo) Sort(params string) (*models.Vehicles, error) {
+	var data models.Vehicles
+
+	result := r.db.Order(params).Find(&data)
+	if result.Error != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
+}
+func (r *vehicles_repo) Search(params string) (*models.Vehicles, error) {
+	var data models.Vehicles
+
+	result := r.db.Where("name", params).Find(&data)
+	if result.Error != nil {
+		return nil, errors.New("gagal mencari data")
+	}
+
+	return &data, nil
+}
+
+//popular vehicles
+func (r *vehicles_repo) Popular() (*models.Vehicles, error) {
+	var data models.Vehicles
+
+	//result := r.db.Model(&data).Select("vehicles_id").Joins("left join on")
+	result := r.db.Joins("histories").Joins("vehicles").Find(&data)
+	fmt.Println(result)
+	if result != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
 }

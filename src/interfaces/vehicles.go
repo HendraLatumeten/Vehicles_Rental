@@ -7,6 +7,9 @@ type VehiclesRepo interface {
 	Save(data *models.Vehicle) (*models.Vehicle, error)
 	Delete(data *models.Vehicle, params string) (*models.Vehicle, error)
 	Update(data *models.Vehicle, params string) (*models.Vehicle, error)
+	Sort(params string) (*models.Vehicles, error)
+	Search(params string) (*models.Vehicles, error)
+	Popular() (*models.Vehicles, error)
 }
 
 type VehiclesService interface {
@@ -14,4 +17,11 @@ type VehiclesService interface {
 	Add(data *models.Vehicle) (*models.Vehicle, error)
 	DeleteData(data *models.Vehicle, params string) (*models.Vehicle, error)
 	UpdateData(data *models.Vehicle, params string) (*models.Vehicle, error)
+	SortData(parmas string) (*models.Vehicles, error)
+	SearchData(parmas string) (*models.Vehicles, error)
+	PopularVehicles() (*models.Vehicles, error)
+}
+
+type UnitTest interface {
+	GetAll() *models.Vehicles
 }

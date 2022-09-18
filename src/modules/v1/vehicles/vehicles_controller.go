@@ -26,7 +26,11 @@ func (re *vehicles_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 
 func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +44,11 @@ func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 
 func (re *vehicles_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +62,11 @@ func (re *vehicles_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 
 func (re *vehicles_ctrl) Update(w http.ResponseWriter, r *http.Request) {
@@ -72,5 +84,51 @@ func (re *vehicles_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
+}
+
+//sort and search
+func (re *vehicles_ctrl) Sort(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)["params"]
+	data, err := re.svc.SortData(params)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
+}
+func (re *vehicles_ctrl) Search(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)["params"]
+	data, err := re.svc.SearchData(params)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
+}
+
+//popular vehicles
+func (re *vehicles_ctrl) PopularVehicles(w http.ResponseWriter, r *http.Request) {
+	data, err := re.svc.PopularVehicles()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }

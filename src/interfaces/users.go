@@ -15,3 +15,9 @@ type UsersService interface {
 	DeleteData(data *models.User, params string) (*models.User, error)
 	UpdateData(data *models.User, params string) (*models.User, error)
 }
+
+type Response struct {
+	Data       models.User `json:"data"`
+	Status     string      `json:"status"`
+	StatusCode int         `json:"statusCode"`
+}

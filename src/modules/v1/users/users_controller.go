@@ -19,12 +19,18 @@ func NewCtrl(reps interfaces.UsersService) *users_ctrl {
 }
 
 func (re *users_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "application/json")
+
 	data, err := re.svc.GetAll()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"data":       &data,
+		"status":     "success",
+		"statusCode": 200,
+	})
 }
 
 func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +44,11 @@ func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
@@ -51,7 +61,11 @@ func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
@@ -68,5 +82,9 @@ func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }

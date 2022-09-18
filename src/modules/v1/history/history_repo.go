@@ -52,3 +52,25 @@ func (r *history_repo) Update(data *models.Histories, params string) (*models.Hi
 	r.db.Create(&data)
 	return data, nil
 }
+
+//sort and search
+func (r *history_repo) Sort(params string) (*models.HistoriesAll, error) {
+	var data models.HistoriesAll
+
+	result := r.db.Order(params).Find(&data)
+	if result.Error != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
+}
+func (r *history_repo) Search(params string) (*models.Histories, error) {
+	var data models.Histories
+
+	result := r.db.Where("history_id", params).Find(&data)
+	if result.Error != nil {
+		return nil, errors.New("gagal mencari data")
+	}
+
+	return &data, nil
+}

@@ -58,3 +58,27 @@ func (r *history_service) UpdateData(data *models.Histories, params string) (*mo
 	}
 	return data, nil
 }
+
+//sort and search
+func (r *history_service) SortData(params string) (*models.HistoriesAll, error) {
+	data, err := r.repo.Sort(params)
+	if data != nil {
+		fmt.Println("Get Data Berhasil")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (r *history_service) SearchData(params string) (*models.Histories, error) {
+	data, err := r.repo.Search(params)
+	if data != nil {
+		fmt.Println("Get Data Berhasil")
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}

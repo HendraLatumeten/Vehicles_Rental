@@ -59,5 +59,42 @@ func (r *vehicles_service) UpdateData(data *models.Vehicle, params string) (*mod
 	return data, nil
 }
 
+//sort and search
+func (r *vehicles_service) SortData(params string) (*models.Vehicles, error) {
+	data, err := r.repo.Sort(params)
+	if data != nil {
+		fmt.Println("Get Data Berhasil")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (r *vehicles_service) SearchData(params string) (*models.Vehicles, error) {
+	data, err := r.repo.Search(params)
+	if data != nil {
+		fmt.Println("Get Data Berhasil")
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+//popular vehicles
+func (r *vehicles_service) PopularVehicles() (*models.Vehicles, error) {
+	data, err := r.repo.Popular()
+	fmt.Println(data)
+	if data != nil {
+		fmt.Println("Get Data Berhasil")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 // berinteraksi dengan repo dan controller
 // berisi logic bisnis

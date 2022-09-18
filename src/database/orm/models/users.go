@@ -17,3 +17,10 @@ type User struct {
 }
 
 type Users []User
+
+//respon
+// type Response struct {
+// 	Data       Users  `json:"data"`
+// 	Status     string `json:"status"`
+// 	StatusCode int    `json:"statusCode"`
+// }

@@ -23,7 +23,11 @@ func (re *history_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 
 func (re *history_ctrl) Add(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +41,11 @@ func (re *history_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 
 func (re *history_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +59,11 @@ func (re *history_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
 func (re *history_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
@@ -68,5 +80,37 @@ func (re *history_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
+}
+
+//sort and search
+func (re *history_ctrl) Sort(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)["params"]
+	data, err := re.svc.SortData(params)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       data,
+	})
+}
+func (re *history_ctrl) Search(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)["params"]
+	data, err := re.svc.SearchData(params)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":     "success",
+		"statusCode": 200,
+		"data":       &data,
+	})
 }
