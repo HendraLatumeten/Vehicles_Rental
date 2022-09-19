@@ -112,6 +112,6 @@ func (re *vehicles_ctrl) PopularVehicles(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 	} else {
-		responses.JSON(w, http.StatusCreated, &data)
+		responses.JSON(w, http.StatusOK, &data)
 	}
 }

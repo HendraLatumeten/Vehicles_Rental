@@ -2,7 +2,6 @@ package vehicles
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"gorm.io/gorm"
@@ -32,6 +31,7 @@ func (r *vehicles_repo) FindAll() (*models.Vehicles, error) {
 func (r *vehicles_repo) Save(data *models.Vehicle) (*models.Vehicle, error) {
 
 	result := r.db.Create(data)
+
 	if result.Error != nil {
 		return nil, errors.New("gagal Menyimpan data")
 	}
@@ -81,10 +81,8 @@ func (r *vehicles_repo) Search(params string) (*models.Vehicles, error) {
 func (r *vehicles_repo) Popular() (*models.Vehicles, error) {
 	var data models.Vehicles
 
-	//result := r.db.Model(&data).Select("vehicles_id").Joins("left join on")
-	result := r.db.Joins("histories").Joins("vehicles").Find(&data)
-	fmt.Println(result)
-	if result != nil {
+	result := r.db.Select("orders,name").Order("orders desc").Find(&data)
+	if result.Error != nil {
 		return nil, errors.New("gagal mengambil data")
 	}
 

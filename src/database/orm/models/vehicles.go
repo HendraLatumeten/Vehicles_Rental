@@ -9,13 +9,9 @@ type Vehicle struct {
 	City          string    `json:"city"`
 	Capacity      int       `json:"capacity"`
 	Image         string    `json:"image"`
+	Orders        string    `json:"orders"`
 	Create_at     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	Updated_at    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 type Vehicles []Vehicle
-
-type popular struct {
-	VehiclesJoin int       `gorm:"column:vehicles_id"`
-	vehicles     Histories `gorm:"foreignKey:VehicleJoin"`
-}

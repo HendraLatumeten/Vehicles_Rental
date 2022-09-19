@@ -86,7 +86,6 @@ func (r *vehicles_service) SearchData(params string) (*models.Vehicles, error) {
 //popular vehicles
 func (r *vehicles_service) PopularVehicles() (*models.Vehicles, error) {
 	data, err := r.repo.Popular()
-	fmt.Println(data)
 	if data != nil {
 		fmt.Println("Get Data Berhasil")
 	}
