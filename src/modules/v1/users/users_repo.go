@@ -50,6 +50,5 @@ func (r *users_repo) Update(data *models.User, params string) (*models.User, err
 	if result.Error != nil {
 		return nil, errors.New("gagal Mengupdate data")
 	}
-	r.db.Create(&data)
 	return data, nil
 }

@@ -52,12 +52,6 @@ func (r *vehicles_repo) Update(data *models.Vehicle, params string) (*models.Veh
 	if result.Error != nil {
 		return nil, errors.New("gagal Mengupdate data")
 	}
-	// id := strconv.FormatUint(uint64(data.Vehicles_id), 10)
-	// if id == params {
-	// 	return nil, errors.New("id sudah terpakai")
-	// }
-	//result := r.db.Order(params).Find(&data)
-	r.db.Create(&data)
 	return data, nil
 }
 

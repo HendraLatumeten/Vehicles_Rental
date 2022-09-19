@@ -5,8 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
+	"github.com/hendralatumeten/vehicles_rental/src/responses"
 )
 
 //menghandle Request
@@ -23,68 +25,65 @@ func (re *users_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 
 	data, err := re.svc.GetAll()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		//error handling
+		responses.ERROR(w, http.StatusBadRequest, err)
+	} else {
+		//response
+		responses.JSON(w, http.StatusOK, &data)
 	}
 
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"data":       &data,
-		"status":     "success",
-		"statusCode": 200,
-	})
 }
 
 func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
 
+	var decode = schema.NewDecoder()
 	var datas models.User
-	json.NewDecoder(r.Body).Decode(&datas)
-
+	err := r.ParseForm()
+	if err != nil {
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	}
+	decode.Decode(&datas, r.PostForm)
 	data, err := re.svc.Add(&datas)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	} else {
+		responses.JSON(w, http.StatusCreated, &data)
 	}
 
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }
 func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
+
 	userId := mux.Vars(r)["user_id"]
 	var datas models.User
 
 	json.NewDecoder(r.Body).Decode(&datas)
 	data, err := re.svc.DeleteData(&datas, userId)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusBadRequest, err)
+	} else {
+		responses.JSON(w, http.StatusOK, &data)
 	}
 
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }
 func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
+
 	userId := mux.Vars(r)["user_id"]
+	var decode = schema.NewDecoder()
 	var datas models.User
 
-	err := json.NewDecoder(r.Body).Decode(&datas)
+	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 	}
-
+	decode.Decode(&datas, r.PostForm)
 	data, err := re.svc.UpdateData(&datas, userId)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	} else {
+		responses.JSON(w, http.StatusCreated, &data)
 	}
 
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }

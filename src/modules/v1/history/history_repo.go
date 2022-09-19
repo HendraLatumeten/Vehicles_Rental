@@ -49,7 +49,6 @@ func (r *history_repo) Update(data *models.Histories, params string) (*models.Hi
 	if result.Error != nil {
 		return nil, errors.New("gagal Mengupdate data")
 	}
-	r.db.Create(&data)
 	return data, nil
 }
 
@@ -59,7 +58,7 @@ func (r *history_repo) Sort(params string) (*models.HistoriesAll, error) {
 
 	result := r.db.Order(params).Find(&data)
 	if result.Error != nil {
-		return nil, errors.New("gagal mengambil data")
+		return nil, errors.New("gagal sort data")
 	}
 
 	return &data, nil

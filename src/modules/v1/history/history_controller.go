@@ -5,8 +5,10 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
+	"github.com/hendralatumeten/vehicles_rental/src/responses"
 )
 
 type history_ctrl struct {
@@ -20,71 +22,64 @@ func NewCtrl(reps interfaces.HistoryService) *history_ctrl {
 func (re *history_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 	data, err := re.svc.GetAll()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		//error handling
+		responses.ERROR(w, http.StatusBadRequest, err)
+	} else {
+		//response
+		responses.JSON(w, http.StatusOK, &data)
 	}
-
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }
 
 func (re *history_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
 
+	var decode = schema.NewDecoder()
 	var datas models.Histories
-	json.NewDecoder(r.Body).Decode(&datas)
+	err := r.ParseForm()
+	if err != nil {
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	}
+	decode.Decode(&datas, r.PostForm)
 
 	data, err := re.svc.Add(&datas)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	} else {
+		responses.JSON(w, http.StatusCreated, &data)
 	}
-
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }
 
 func (re *history_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
-	userId := mux.Vars(r)["history_id"]
+	historyId := mux.Vars(r)["history_id"]
 	var datas models.Histories
 
 	json.NewDecoder(r.Body).Decode(&datas)
-	data, err := re.svc.DeleteData(&datas, userId)
+	data, err := re.svc.DeleteData(&datas, historyId)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	} else {
+		responses.JSON(w, http.StatusOK, &data)
 	}
-
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }
 func (re *history_ctrl) Update(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
-	userId := mux.Vars(r)["history_id"]
+	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
+
+	historyId := mux.Vars(r)["history_id"]
+	var decode = schema.NewDecoder()
 	var datas models.Histories
 
-	err := json.NewDecoder(r.Body).Decode(&datas)
+	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 	}
-
-	data, err := re.svc.UpdateData(&datas, userId)
+	decode.Decode(&datas, r.PostForm)
+	data, err := re.svc.UpdateData(&datas, historyId)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	} else {
+		responses.JSON(w, http.StatusCreated, &data)
 	}
-
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }
 
 //sort and search
@@ -92,25 +87,17 @@ func (re *history_ctrl) Sort(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)["params"]
 	data, err := re.svc.SortData(params)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	} else {
+		responses.JSON(w, http.StatusOK, &data)
 	}
-
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       data,
-	})
 }
 func (re *history_ctrl) Search(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)["params"]
 	data, err := re.svc.SearchData(params)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+	} else {
+		responses.JSON(w, http.StatusOK, &data)
 	}
-
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status":     "success",
-		"statusCode": 200,
-		"data":       &data,
-	})
 }
