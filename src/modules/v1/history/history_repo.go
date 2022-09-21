@@ -27,18 +27,19 @@ func (r *history_repo) FindAll() (*models.HistoriesAll, error) {
 }
 
 func (r *history_repo) Save(data *models.Histories) (*models.Histories, error) {
-	var datas models.Vehicle
+	//var datas models.Vehicle
 
 	result := r.db.Create(&data)
 	if result.Error != nil {
 		return nil, errors.New("gagal Menyimpan data")
 	}
+	// rows := r.db.Select("orders").Where("orders", data.Vehicles_id)
+	// fmt.Println(&rows)
+	// r.db.Model(&datas).Where("vehicles_id = ?", data.Vehicles_id).Update("orders", datas.Orders)
 
-	row := r.db.Model(&datas).Where("vehicles_id = ?", data.Vehicles_id).Update("order", 1)
-	row.Scan(&data)
-	if row.Error != nil {
-		return nil, errors.New("gagal update order")
-	}
+	var dataVehicle models.Vehicle
+	r.db.First(&dataVehicle, "vehicles_id = ?", data.Vehicles_id)
+	r.db.Model(&dataVehicle).Where("vehicles_id = ?", data.Vehicles_id).Update("orders", dataVehicle.Orders+1)
 
 	return data, nil
 }

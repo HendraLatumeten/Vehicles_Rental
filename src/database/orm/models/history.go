@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Histories struct {
-	History_id     uint      `gorm:"primaryKey;autoIncrement:true"`
+	Histories_id   uint      `gorm:"primaryKey;autoIncrement" json:"histories_id"`
 	User_id        string    `json:"user_id"`
 	Vehicles_id    int       `json:"vehicles_id"`
 	Date_order_at  string    `json:"date_order_at"`

@@ -2,6 +2,7 @@ package vehicles
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"gorm.io/gorm"
@@ -31,7 +32,9 @@ func (r *vehicles_repo) FindAll() (*models.Vehicles, error) {
 func (r *vehicles_repo) Save(data *models.Vehicle) (*models.Vehicle, error) {
 
 	result := r.db.Create(data)
-
+	// if result.Statement.RowsAffected != 0 {
+	// 	return nil, errors.New("data suda ada")
+	// }
 	if result.Error != nil {
 		return nil, errors.New("gagal Menyimpan data")
 	}
@@ -68,8 +71,8 @@ func (r *vehicles_repo) Sort(params string) (*models.Vehicles, error) {
 }
 func (r *vehicles_repo) Search(params string) (*models.Vehicles, error) {
 	var data models.Vehicles
-
-	result := r.db.Where("name", params).Find(&data)
+	vars := strings.ToLower((params))
+	result := r.db.Where("LOWER(name) LIKE ?", "%"+vars+"%").Find(&data)
 	if result.Error != nil {
 		return nil, errors.New("gagal mencari data")
 	}
@@ -81,7 +84,7 @@ func (r *vehicles_repo) Search(params string) (*models.Vehicles, error) {
 func (r *vehicles_repo) Popular() (*models.Vehicles, error) {
 	var data models.Vehicles
 
-	result := r.db.Select("orders,name").Order("orders desc").Find(&data)
+	result := r.db.Select("orders").Order("orders desc").Find(&data)
 	if result.Error != nil {
 		return nil, errors.New("gagal mengambil data")
 	}
