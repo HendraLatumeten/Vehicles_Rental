@@ -1,23 +1,25 @@
 package interfaces
 
-import "github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
+import (
+	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
+	"github.com/hendralatumeten/vehicles_rental/src/libs"
+)
 
 type UsersRepo interface {
 	FindAll() (*models.Users, error)
+	FindByUsername(username string) (*models.User, error)
+	UserExsist(username, email string) bool
 	Save(data *models.User) (*models.User, error)
+
 	Delete(data *models.User, params string) (*models.User, error)
 	Update(data *models.User, params string) (*models.User, error)
 }
 
 type UsersService interface {
 	GetAll() (*models.Users, error)
-	Add(data *models.User) (*models.User, error)
+	GetByUsername(username string) *libs.Response
+
+	Add(data *models.User) *libs.Response
 	DeleteData(data *models.User, params string) (*models.User, error)
 	UpdateData(data *models.User, params string) (*models.User, error)
-}
-
-type Response struct {
-	Data       models.User `json:"data"`
-	Status     string      `json:"status"`
-	StatusCode int         `json:"statusCode"`
 }

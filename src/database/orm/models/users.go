@@ -6,7 +6,8 @@ type User struct {
 	User_id       string    `gorm:"type:uuid;primary_key;default:uuid_generate_v4()" json:"user_id"`
 	Username      string    `json:"username"`
 	Email         string    `json:"email"`
-	Password      string    `json:"password"`
+	Role          string    `json:"role"`
+	Password      string    `json:"password,omitempty" validate:"required"`
 	Gender        string    `json:"gender"`
 	Address       string    `json:"address"`
 	Phone_number  uint      `json:"phone_number"`
@@ -17,10 +18,3 @@ type User struct {
 }
 
 type Users []User
-
-//respon
-// type Response struct {
-// 	Data       Users  `json:"data"`
-// 	Status     string `json:"status"`
-// 	StatusCode int    `json:"statusCode"`
-// }

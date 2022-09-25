@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
+	"github.com/hendralatumeten/vehicles_rental/src/libs"
 	"github.com/hendralatumeten/vehicles_rental/src/responses"
 )
 
@@ -21,37 +22,30 @@ func NewCtrl(reps interfaces.UsersService) *users_ctrl {
 }
 
 func (re *users_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
-
-	data, err := re.svc.GetAll()
-	if err != nil {
-		//error handling
-		responses.ERROR(w, http.StatusBadRequest, err)
-	} else {
-		//response
-		responses.JSON(w, http.StatusOK, &data)
-	}
+	username := r.Context().Value("username")
+	result := re.svc.GetByUsername(username.(string))
+	result.Send(w)
 
 }
 
-func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
+// func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
 
-	var decode = schema.NewDecoder()
-	var datas models.User
-	err := r.ParseForm()
-	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
-	}
-	decode.Decode(&datas, r.PostForm)
-	data, err := re.svc.Add(&datas)
-	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
-	} else {
-		responses.JSON(w, http.StatusCreated, &data)
-	}
+// 	var decode = schema.NewDecoder()
+// 	var datas models.User
+// 	err := r.ParseForm()
+// 	if err != nil {
+// 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+// 	}
+// 	decode.Decode(&datas, r.PostForm)
+// 	data, err := re.svc.Add(&datas)
+// 	if err != nil {
+// 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+// 	} else {
+// 		responses.JSON(w, http.StatusCreated, &data)
+// 	}
 
-}
+// }
 func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 
@@ -85,5 +79,19 @@ func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 	} else {
 		responses.JSON(w, http.StatusCreated, &data)
 	}
+
+}
+
+func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
+
+	var decode = schema.NewDecoder()
+	var datas models.User
+	err := r.ParseForm()
+	if err != nil {
+		libs.Respone(err, 500, true)
+		return
+	}
+	decode.Decode(&datas, r.PostForm)
+	re.svc.Add(&datas).Send(w)
 
 }

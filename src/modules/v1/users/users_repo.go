@@ -52,3 +52,23 @@ func (r *users_repo) Update(data *models.User, params string) (*models.User, err
 	}
 	return data, nil
 }
+
+func (r *users_repo) UserExsist(username, email string) bool {
+	var data models.User
+	result := r.db.First(&data, "username = ? OR email = ?", username, email)
+	if result.Error != nil {
+		return false
+	}
+	return true
+}
+
+func (r *users_repo) FindByUsername(username string) (*models.User, error) {
+	var data models.User
+
+	result := r.db.First(&data, "username = ?", username)
+	if result.Error != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
+}

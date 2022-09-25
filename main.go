@@ -1,20 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"net/http"
+	"os"
 
-	"github.com/hendralatumeten/vehicles_rental/src/routers"
+	"github.com/hendralatumeten/vehicles_rental/src/config"
 )
 
 func main() {
-	mainRoute, err := routers.New()
-	if err != nil {
+	if err := config.Run(os.Args[1:]); err != nil {
 		log.Fatal(err)
-
 	}
-	fmt.Println("Serve run on port 8080")
-	http.ListenAndServe(":8080", mainRoute)
 
 }
