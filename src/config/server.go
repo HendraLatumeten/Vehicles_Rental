@@ -11,7 +11,7 @@ import (
 )
 
 var ServeCmd = &cobra.Command{
-	Use:   "run",
+	Use:   "start",
 	Short: "Aplication Start",
 	RunE:  server,
 }
