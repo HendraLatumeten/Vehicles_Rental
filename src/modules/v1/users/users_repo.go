@@ -72,3 +72,14 @@ func (r *users_repo) FindByUsername(username string) (*models.User, error) {
 
 	return &data, nil
 }
+
+func (r *users_repo) FindByRole(role string) (*models.User, error) {
+	var data models.User
+
+	result := r.db.First(&data, "role = ?", role)
+	if result.Error != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
+}

@@ -27,7 +27,7 @@ func CheckAuth(next http.HandlerFunc) http.HandlerFunc {
 		next.ServeHTTP(w, r.WithContext(ctx))
 	}
 }
-func CheckRole (next http.HandlerFunc) http.HandlerFunc {
+func CheckRole(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		headerToken := r.Header.Get("Authorization")
 
@@ -42,7 +42,13 @@ func CheckRole (next http.HandlerFunc) http.HandlerFunc {
 			libs.Respone(err.Error(), 401, true).Send(w)
 			return
 		}
-		ctx := context.WithValue(r.Context(), "username", checkTokens.Username)
+
+		if checkTokens.Role != "admin" {
+			libs.Respone("anda bukan admin", 401, true).Send(w)
+			return
+
+		}
+		ctx := context.WithValue(r.Context(), "role", checkTokens.Role)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	}
 }

@@ -8,6 +8,7 @@ import (
 type UsersRepo interface {
 	FindAll() (*models.Users, error)
 	FindByUsername(username string) (*models.User, error)
+	FindByRole(role string) (*models.User, error)
 	UserExsist(username, email string) bool
 	Save(data *models.User) (*models.User, error)
 

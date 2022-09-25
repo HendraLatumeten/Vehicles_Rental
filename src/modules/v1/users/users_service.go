@@ -78,7 +78,7 @@ func (r *users_service) Add(data *models.User) *libs.Response {
 	//fmt.Println(data.Username)
 	if check := r.repo.UserExsist(data.Username, data.Email); check {
 		fmt.Println("data suda ada")
-		return libs.Respone("username sudah terdaftar", 400, true)
+		return libs.Respone("username atau email sudah terdaftar", 400, true)
 	}
 
 	hassPaasword, err := libs.HashPassword(data.Password)
