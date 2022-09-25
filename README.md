@@ -34,18 +34,7 @@ git clone https://github.com/HendraLatumeten/Vehicles_Rental.git
 go get -u ./...
 ```
 
-3. Run the Migration
-
-```bash
-#Migration: 
-go run main.go migrate --up
-# or
-#Rollback: 
-go run main.go migrate --down
-```
-
-
-4. Add File Env
+3. Add Env
 
 ```sh
   APP_PORT= Your Port
@@ -55,6 +44,16 @@ go run main.go migrate --down
   DB_HOST = Your DB Host
   DB_NAME = Your DB Name
   DB_PASS = Your DB Password
+```
+
+4. Run the Migration
+
+```bash
+#Migration: 
+go run main.go migrate --up
+# or
+#Rollback: 
+go run main.go migrate --down
 ```
 
 
@@ -71,16 +70,16 @@ go run main.go start
 - [Postgres](https://www.postgresql.org/): DBMS
 
 
-## 📌 Connect My Social Media
+## 📌 Connect with me
 
- - Facebook : [Hendra Latumeten](https://web.facebook.com/hendra.latumeten)
+ - [Facebook](https://web.facebook.com/hendra.latumeten)
  
- - Instagram : [Hendra Latumeten](https://www.instagram.com/hendralatumeten)
+ - [Instagram](https://www.instagram.com/hendralatumeten)
  
- - Linkedin : [Hendra Latumeten](https://www.linkedin.com/in/hendralatumeten/)
+ - [Linkedin](https://www.linkedin.com/in/hendralatumeten/)
  
  
- ## 🔥 supported by
+ ## 🔥 Supported by
  <p align="center"><img src="https://yt3.ggpht.com/ytc/AKedOLT7YD9x6PiR-CfbBbFC3wz2WatiIZFrI_I0v-6k=s900-c-k-c0x00ffffff-no-rj" width="200px" height="200px" alt="Arkademylogo.svg" /></p>
 
 <p align="center">
