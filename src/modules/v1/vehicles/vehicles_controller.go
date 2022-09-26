@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
+	"github.com/hendralatumeten/vehicles_rental/src/libs"
 	"github.com/hendralatumeten/vehicles_rental/src/responses"
 )
 
@@ -34,21 +35,21 @@ func (re *vehicles_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
+	w.Header().Set("Content-type", "multipart/form-data")
 
 	var decode = schema.NewDecoder()
 	var datas models.Vehicle
-	err := r.ParseForm()
+	err := r.ParseMultipartForm(32 << 20)
 	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		libs.Respone(err, 500, true)
 	}
-	decode.Decode(&datas, r.PostForm)
+	decode.Decode(&datas, r.Form)
 
 	data, err := re.svc.Add(&datas)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 	} else {
-		responses.JSON(w, http.StatusCreated, &data)
+		libs.Respone(data, 200, true).Send(w)
 	}
 }
 
@@ -73,11 +74,11 @@ func (re *vehicles_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 	var decode = schema.NewDecoder()
 	var datas models.Vehicle
 
-	err := r.ParseForm()
+	err := r.ParseMultipartForm(32 << 20)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 	}
-	decode.Decode(&datas, r.PostForm)
+	decode.Decode(&datas, r.Form)
 	data, err := re.svc.UpdateData(&datas, vehiclesId)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)

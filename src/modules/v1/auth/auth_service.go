@@ -22,7 +22,7 @@ func (a auth_service) Login(body models.User) *libs.Response {
 	//get user database
 	user, err := a.repo.FindByUsername(body.Username)
 	if err != nil {
-		return libs.Respone("username tidak terdaftar", 401, true)
+		return libs.Respone(err.Error(), 401, true)
 	}
 
 	//password check

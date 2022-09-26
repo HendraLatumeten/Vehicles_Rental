@@ -13,14 +13,16 @@ type UsersRepo interface {
 	Save(data *models.User) (*models.User, error)
 
 	Delete(data *models.User, params string) (*models.User, error)
-	Update(data *models.User, params string) (*models.User, error)
+	Update(data *models.User, params string, filename string) (*models.User, error)
+	//Update(data *models.User, params string) (*models.User, error)
 }
 
 type UsersService interface {
 	GetAll() (*models.Users, error)
 	GetByUsername(username string) *libs.Response
 
-	Add(data *models.User) *libs.Response
+	Add(data *models.User, filename string) *libs.Response
 	DeleteData(data *models.User, params string) (*models.User, error)
-	UpdateData(data *models.User, params string) (*models.User, error)
+	UpdateData(data *models.User, params string, filename string) (*models.User, error)
+	//UpdateData(data *models.User, params string) (*models.User, error)
 }

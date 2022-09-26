@@ -2,6 +2,8 @@ package users
 
 import (
 	"errors"
+	"fmt"
+	"os"
 
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"gorm.io/gorm"
@@ -38,6 +40,15 @@ func (r *users_repo) Save(data *models.User) (*models.User, error) {
 	return data, nil
 }
 func (r *users_repo) Delete(data *models.User, params string) (*models.User, error) {
+
+	//delete file
+	r.db.First(&data, "user_id = ?", params)
+	path := "./image/" + data.Image
+	err := os.Remove(path)
+	if err != nil {
+		return nil, errors.New("file tidak ada")
+	}
+	//delete data
 	result := r.db.Where("user_id", params).Delete(&data)
 	if result.Error != nil {
 		return nil, errors.New("gagal Menghapus data")
@@ -45,21 +56,21 @@ func (r *users_repo) Delete(data *models.User, params string) (*models.User, err
 
 	return data, nil
 }
-func (r *users_repo) Update(data *models.User, params string) (*models.User, error) {
+
+func (r *users_repo) Update(data *models.User, params string, filename string) (*models.User, error) {
+
+	r.db.First(&data, "user_id = ?", params)
+	fmt.Println(filename)
+	path := "./image/" + data.Image
+	os.Remove(path)
+
+	data.Image = filename
 	result := r.db.Model(&data).Where("user_id = ?", params).Updates(&data)
 	if result.Error != nil {
 		return nil, errors.New("gagal Mengupdate data")
 	}
-	return data, nil
-}
 
-func (r *users_repo) UserExsist(username, email string) bool {
-	var data models.User
-	result := r.db.First(&data, "username = ? OR email = ?", username, email)
-	if result.Error != nil {
-		return false
-	}
-	return true
+	return data, nil
 }
 
 func (r *users_repo) FindByUsername(username string) (*models.User, error) {
@@ -82,4 +93,12 @@ func (r *users_repo) FindByRole(role string) (*models.User, error) {
 	}
 
 	return &data, nil
+}
+func (r *users_repo) UserExsist(username, email string) bool {
+	var data models.User
+	result := r.db.First(&data, "username = ? OR email = ?", username, email)
+	if result.Error != nil {
+		return false
+	}
+	return true
 }

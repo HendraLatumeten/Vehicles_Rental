@@ -28,21 +28,6 @@ func (r *users_service) GetAll() (*models.Users, error) {
 	return data, nil
 }
 
-// func (r *users_service) Add(data *models.User) *libs.Response {
-
-// 	if check := r.repo.UserExsist(data.Username); check {
-// 		return libs.Respone("data", 200, true)
-// 	}
-// 	r.repo.Save(data)
-// 	//data, err := r.repo.Save(data)
-// 	// if data != nil {
-// 	// 	fmt.Println("Data Berhasil Disimpan")
-// 	// }
-// 	// if err != nil {
-// 	// 	return nil, err
-// 	// }
-// 	return libs.Respone("data", 200, true)
-// }
 func (r *users_service) DeleteData(data *models.User, params string) (*models.User, error) {
 	data, err := r.repo.Delete(data, params)
 	if data != nil {
@@ -53,8 +38,21 @@ func (r *users_service) DeleteData(data *models.User, params string) (*models.Us
 	}
 	return data, nil
 }
-func (r *users_service) UpdateData(data *models.User, params string) (*models.User, error) {
-	data, err := r.repo.Update(data, params)
+
+// func (r *users_service) UpdateData(data *models.User, params string) (*models.User, error) {
+// 	data, err := r.repo.Update(data, params)
+// 	if data != nil {
+// 		fmt.Println("Data Terupdate")
+// 	}
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return data, nil
+// }
+
+func (r *users_service) UpdateData(data *models.User, params string, filename string) (*models.User, error) {
+
+	data, err := r.repo.Update(data, params, filename)
 	if data != nil {
 		fmt.Println("Data Terupdate")
 	}
@@ -73,11 +71,11 @@ func (r *users_service) GetByUsername(username string) *libs.Response {
 	return libs.Respone(data, 200, false)
 }
 
-func (r *users_service) Add(data *models.User) *libs.Response {
+func (r *users_service) Add(data *models.User, filename string) *libs.Response {
 
 	//fmt.Println(data.Username)
+
 	if check := r.repo.UserExsist(data.Username, data.Email); check {
-		fmt.Println("data suda ada")
 		return libs.Respone("username atau email sudah terdaftar", 400, true)
 	}
 
@@ -85,7 +83,10 @@ func (r *users_service) Add(data *models.User) *libs.Response {
 	if err != nil {
 		return libs.Respone(err.Error(), 400, true)
 	}
+
+	data.Image = filename
 	data.Password = hassPaasword
+
 	result, err := r.repo.Save(data)
 	if err != nil {
 		return libs.Respone(err.Error(), 400, true)

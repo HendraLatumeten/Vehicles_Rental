@@ -27,7 +27,7 @@ func CheckAuth(next http.HandlerFunc) http.HandlerFunc {
 		next.ServeHTTP(w, r.WithContext(ctx))
 	}
 }
-func CheckRole(next http.HandlerFunc) http.HandlerFunc {
+func AdminRole(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		headerToken := r.Header.Get("Authorization")
 

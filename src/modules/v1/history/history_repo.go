@@ -33,9 +33,6 @@ func (r *history_repo) Save(data *models.Histories) (*models.Histories, error) {
 	if result.Error != nil {
 		return nil, errors.New("gagal Menyimpan data")
 	}
-	// rows := r.db.Select("orders").Where("orders", data.Vehicles_id)
-	// fmt.Println(&rows)
-	// r.db.Model(&datas).Where("vehicles_id = ?", data.Vehicles_id).Update("orders", datas.Orders)
 
 	var dataVehicle models.Vehicle
 	r.db.First(&dataVehicle, "vehicles_id = ?", data.Vehicles_id)

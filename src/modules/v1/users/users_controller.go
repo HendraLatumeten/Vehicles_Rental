@@ -2,6 +2,7 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -27,71 +28,88 @@ func (re *users_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 	result.Send(w)
 
 }
-
-// func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
-
-// 	var decode = schema.NewDecoder()
-// 	var datas models.User
-// 	err := r.ParseForm()
-// 	if err != nil {
-// 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
-// 	}
-// 	decode.Decode(&datas, r.PostForm)
-// 	data, err := re.svc.Add(&datas)
-// 	if err != nil {
-// 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
-// 	} else {
-// 		responses.JSON(w, http.StatusCreated, &data)
-// 	}
-
-// }
 func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/json")
-
 	userId := mux.Vars(r)["user_id"]
 	var datas models.User
 
 	json.NewDecoder(r.Body).Decode(&datas)
 	data, err := re.svc.DeleteData(&datas, userId)
 	if err != nil {
-		responses.ERROR(w, http.StatusBadRequest, err)
+		libs.Respone(err, 500, true)
+		return
 	} else {
 		responses.JSON(w, http.StatusOK, &data)
 	}
 
 }
+
+// func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-type", "multipart/form-data")
+
+// 	userId := mux.Vars(r)["user_id"]
+// 	var decode = schema.NewDecoder()
+// 	var datas models.User
+
+// 	var x interface{} = r.Context().Value("image")
+// 	filename := fmt.Sprintf("%v", x)
+
+// 	err := r.ParseMultipartForm(32 << 20)
+// 	if err != nil {
+// 		libs.Respone(err, 500, true)
+// 		return
+// 	}
+// 	decode.Decode(&datas, r.Form)
+// 	data, err := re.svc.UpdateData(&datas, userId)
+// 	if err == nil {
+// 		libs.Respone(err, 500, true)
+// 		return
+// 	} else {
+// 		responses.JSON(w, http.StatusOK, &data)
+// 	}
+// }
+
 func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "application/x-www-form-urlencoded")
+	// w.Header().Set("Content-type", "multipart/form-data")
 
 	userId := mux.Vars(r)["user_id"]
 	var decode = schema.NewDecoder()
 	var datas models.User
 
-	err := r.ParseForm()
-	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
-	}
-	decode.Decode(&datas, r.PostForm)
-	data, err := re.svc.UpdateData(&datas, userId)
-	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
-	} else {
-		responses.JSON(w, http.StatusCreated, &data)
-	}
+	//convert context to string
+	var x interface{} = r.Context().Value("image")
+	filename := fmt.Sprintf("%v", x)
 
-}
-
-func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-
-	var decode = schema.NewDecoder()
-	var datas models.User
-	err := r.ParseForm()
+	err := r.ParseMultipartForm(32 << 20)
 	if err != nil {
 		libs.Respone(err, 500, true)
 		return
 	}
-	decode.Decode(&datas, r.PostForm)
-	re.svc.Add(&datas).Send(w)
+	decode.Decode(&datas, r.Form)
+	data, err := re.svc.UpdateData(&datas, userId, filename)
+	if err == nil {
+		libs.Respone(err, 500, true)
+		return
+	} else {
+		responses.JSON(w, http.StatusOK, &data)
+	}
+}
+
+func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "multipart/form-data")
+
+	var decode = schema.NewDecoder()
+	var datas models.User
+
+	//convert context to string
+	var x interface{} = r.Context().Value("image")
+	filename := fmt.Sprintf("%v", x)
+
+	err := r.ParseMultipartForm(32 << 20)
+	if err != nil {
+		libs.Respone(err, 500, true)
+		return
+	}
+	decode.Decode(&datas, r.Form)
+	re.svc.Add(&datas, filename).Send(w)
 
 }

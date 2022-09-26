@@ -35,11 +35,11 @@ func (re *history_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 
 	var decode = schema.NewDecoder()
 	var datas models.Histories
-	err := r.ParseForm()
+	err := r.ParseMultipartForm(32 << 20)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 	}
-	decode.Decode(&datas, r.PostForm)
+	decode.Decode(&datas, r.Form)
 
 	data, err := re.svc.Add(&datas)
 	if err != nil {
