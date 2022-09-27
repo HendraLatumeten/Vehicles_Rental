@@ -8,14 +8,12 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/hendralatumeten/vehicles_rental/src/libs"
 )
 
 func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// if r.Method != "PUT" {
-		// 	libs.Respone("method tidak sesuai", 400, true)
-		// 	return
-		// }
 
 		if err := r.ParseMultipartForm(1024); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -42,6 +40,13 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 		if img != "" {
 			filename = fmt.Sprintf("%s%s", img, filepath.Ext(handler.Filename))
 		}
+		fileExtension := filepath.Ext(filename)
+
+		//validate extension
+		if fileExtension != ".jpg" && fileExtension != ".png" && fileExtension != ".jpeg" {
+			libs.Respone("extension salah", 400, true).Send(w)
+			return
+		}
 
 		fileLocation := filepath.Join(dir, "image", filename)
 
@@ -57,9 +62,9 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		//libs.Respone(fileLocation, 400, true)
 		ctx := context.WithValue(r.Context(), "image", filename)
 		next.ServeHTTP(w, r.WithContext(ctx))
+
 	}
 
 }

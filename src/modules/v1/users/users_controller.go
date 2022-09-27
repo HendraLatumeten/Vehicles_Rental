@@ -43,31 +43,6 @@ func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-type", "multipart/form-data")
-
-// 	userId := mux.Vars(r)["user_id"]
-// 	var decode = schema.NewDecoder()
-// 	var datas models.User
-
-// 	var x interface{} = r.Context().Value("image")
-// 	filename := fmt.Sprintf("%v", x)
-
-// 	err := r.ParseMultipartForm(32 << 20)
-// 	if err != nil {
-// 		libs.Respone(err, 500, true)
-// 		return
-// 	}
-// 	decode.Decode(&datas, r.Form)
-// 	data, err := re.svc.UpdateData(&datas, userId)
-// 	if err == nil {
-// 		libs.Respone(err, 500, true)
-// 		return
-// 	} else {
-// 		responses.JSON(w, http.StatusOK, &data)
-// 	}
-// }
-
 func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 	// w.Header().Set("Content-type", "multipart/form-data")
 
@@ -95,7 +70,7 @@ func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "multipart/form-data")
+	//w.Header().Set("Content-type", "multipart/form-data")
 
 	var decode = schema.NewDecoder()
 	var datas models.User

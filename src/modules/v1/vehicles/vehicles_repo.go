@@ -84,7 +84,7 @@ func (r *vehicles_repo) Search(params string) (*models.Vehicles, error) {
 func (r *vehicles_repo) Popular() (*models.Vehicles, error) {
 	var data models.Vehicles
 
-	result := r.db.Order("orders desc").Where().Find(&data)
+	result := r.db.Order("orders desc").Find(&data)
 	if result.Error != nil {
 		return nil, errors.New("gagal mengambil data")
 	}
