@@ -14,10 +14,9 @@ func New(rt *mux.Router, db *gorm.DB) {
 	svc := NewService(repo)
 	ctrl := NewCtrl(svc)
 
-	//route.HandleFunc("/save", middleware.MultipleMiddleware(middleware.CheckAuth(middleware.FileUpload(ctrl.GetAll)))).Methods("GET")
-	route.HandleFunc("", middleware.CheckAuth(ctrl.GetAll)).Methods("GET")
-	route.HandleFunc("/save", middleware.FileUpload(ctrl.Add)).Methods("POST")
-	route.HandleFunc("/delete/{user_id}", middleware.CheckAuth(ctrl.Delete)).Methods("DELETE")
-	route.HandleFunc("/update/{user_id}", middleware.CheckAuth(middleware.FileUpload(ctrl.Update))).Methods("PUT")
+	route.HandleFunc("", middleware.HandlerChain(middleware.CheckAuth("user", "admin")).Then(ctrl.GetAll)).Methods("GET")
+	route.HandleFunc("/save", middleware.HandlerChain(middleware.FileUpload).Then(ctrl.Add)).Methods("POST")
+	route.HandleFunc("/delete/{user_id}", middleware.HandlerChain(middleware.CheckAuth("user")).Then(ctrl.Add)).Methods("DELETE")
+	route.HandleFunc("/update/{user_id}", middleware.HandlerChain(middleware.CheckAuth("user"), middleware.FileUpload).Then(ctrl.Update)).Methods("PUT")
 
 }

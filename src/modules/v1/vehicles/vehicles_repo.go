@@ -32,9 +32,6 @@ func (r *vehicles_repo) FindAll() (*models.Vehicles, error) {
 func (r *vehicles_repo) Save(data *models.Vehicle) (*models.Vehicle, error) {
 
 	result := r.db.Create(data)
-	// if result.Statement.RowsAffected != 0 {
-	// 	return nil, errors.New("data suda ada")
-	// }
 	if result.Error != nil {
 		return nil, errors.New("gagal Menyimpan data")
 	}

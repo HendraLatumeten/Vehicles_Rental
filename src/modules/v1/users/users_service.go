@@ -28,40 +28,6 @@ func (r *users_service) GetAll() (*models.Users, error) {
 	return data, nil
 }
 
-func (r *users_service) DeleteData(data *models.User, params string) (*models.User, error) {
-	data, err := r.repo.Delete(data, params)
-	if data != nil {
-		fmt.Println("Data Terhapus")
-	}
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
-// func (r *users_service) UpdateData(data *models.User, params string) (*models.User, error) {
-// 	data, err := r.repo.Update(data, params)
-// 	if data != nil {
-// 		fmt.Println("Data Terupdate")
-// 	}
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return data, nil
-// }
-
-func (r *users_service) UpdateData(data *models.User, params string, filename string) (*models.User, error) {
-
-	data, err := r.repo.Update(data, params, filename)
-	if data != nil {
-		fmt.Println("Data Terupdate")
-	}
-	if err != nil {
-		return nil, err
-	}
-	return data, nil
-}
-
 func (r *users_service) GetByUsername(username string) *libs.Response {
 	data, err := r.repo.FindByUsername(username)
 	if err != nil {
@@ -92,5 +58,28 @@ func (r *users_service) Add(data *models.User, filename string) *libs.Response {
 		return libs.Respone(err.Error(), 400, true)
 	}
 
+	return libs.Respone(result, 200, false)
+}
+
+func (r *users_service) DeleteData(data *models.User, params string) (*models.User, error) {
+	data, err := r.repo.Delete(data, params)
+	if data != nil {
+		fmt.Println("Data Terhapus")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (r *users_service) UpdateData(data *models.User, params string, filename string) *libs.Response {
+	result, err := r.repo.Update(data, params, filename)
+	if data != nil {
+		fmt.Println("Data Terupdate")
+	}
+
+	if err != nil {
+		return nil
+	}
 	return libs.Respone(result, 200, false)
 }

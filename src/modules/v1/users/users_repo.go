@@ -2,7 +2,6 @@ package users
 
 import (
 	"errors"
-	"fmt"
 	"os"
 
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
@@ -28,6 +27,36 @@ func (r *users_repo) FindAll() (*models.Users, error) {
 	}
 
 	return &data, nil
+}
+
+func (r *users_repo) FindByUsername(username string) (*models.User, error) {
+	var data models.User
+
+	result := r.db.First(&data, "username = ?", username)
+	if result.Error != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
+}
+
+func (r *users_repo) FindByRole(role string) (*models.User, error) {
+	var data models.User
+
+	result := r.db.First(&data, "role = ?", role)
+	if result.Error != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
+}
+func (r *users_repo) UserExsist(username, email string) bool {
+	var data models.User
+	result := r.db.First(&data, "username = ? OR email = ?", username, email)
+	if result.Error != nil {
+		return false
+	}
+	return true
 }
 
 func (r *users_repo) Save(data *models.User) (*models.User, error) {
@@ -60,10 +89,11 @@ func (r *users_repo) Delete(data *models.User, params string) (*models.User, err
 func (r *users_repo) Update(data *models.User, params string, filename string) (*models.User, error) {
 
 	r.db.First(&data, "user_id = ?", params)
-	fmt.Println(filename)
 	path := "./image/" + data.Image
-	os.Remove(path)
 
+	if data.Image != "" {
+		os.Remove(path)
+	}
 	data.Image = filename
 	result := r.db.Model(&data).Where("user_id = ?", params).Updates(&data)
 	if result.Error != nil {
@@ -71,34 +101,4 @@ func (r *users_repo) Update(data *models.User, params string, filename string) (
 	}
 
 	return data, nil
-}
-
-func (r *users_repo) FindByUsername(username string) (*models.User, error) {
-	var data models.User
-
-	result := r.db.First(&data, "username = ?", username)
-	if result.Error != nil {
-		return nil, errors.New("gagal mengambil data")
-	}
-
-	return &data, nil
-}
-
-func (r *users_repo) FindByRole(role string) (*models.User, error) {
-	var data models.User
-
-	result := r.db.First(&data, "role = ?", role)
-	if result.Error != nil {
-		return nil, errors.New("gagal mengambil data")
-	}
-
-	return &data, nil
-}
-func (r *users_repo) UserExsist(username, email string) bool {
-	var data models.User
-	result := r.db.First(&data, "username = ? OR email = ?", username, email)
-	if result.Error != nil {
-		return false
-	}
-	return true
 }

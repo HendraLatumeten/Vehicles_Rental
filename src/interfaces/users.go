@@ -23,6 +23,6 @@ type UsersService interface {
 
 	Add(data *models.User, filename string) *libs.Response
 	DeleteData(data *models.User, params string) (*models.User, error)
-	UpdateData(data *models.User, params string, filename string) (*models.User, error)
+	UpdateData(data *models.User, params string, filename string) *libs.Response
 	//UpdateData(data *models.User, params string) (*models.User, error)
 }

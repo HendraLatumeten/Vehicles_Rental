@@ -40,6 +40,7 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 		if img != "" {
 			filename = fmt.Sprintf("%s%s", img, filepath.Ext(handler.Filename))
 		}
+
 		fileExtension := filepath.Ext(filename)
 
 		//validate extension

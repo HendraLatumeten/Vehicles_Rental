@@ -44,8 +44,6 @@ func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Content-type", "multipart/form-data")
-
 	userId := mux.Vars(r)["user_id"]
 	var decode = schema.NewDecoder()
 	var datas models.User
@@ -60,18 +58,10 @@ func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	decode.Decode(&datas, r.Form)
-	data, err := re.svc.UpdateData(&datas, userId, filename)
-	if err == nil {
-		libs.Respone(err, 500, true)
-		return
-	} else {
-		responses.JSON(w, http.StatusOK, &data)
-	}
+	re.svc.UpdateData(&datas, userId, filename).Send(w)
 }
 
 func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	//w.Header().Set("Content-type", "multipart/form-data")
-
 	var decode = schema.NewDecoder()
 	var datas models.User
 
