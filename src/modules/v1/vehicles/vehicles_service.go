@@ -6,6 +6,7 @@ import (
 
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
+	"github.com/hendralatumeten/vehicles_rental/src/libs"
 )
 
 type vehicles_service struct {
@@ -27,16 +28,18 @@ func (r *vehicles_service) GetAll() (*models.Vehicles, error) {
 	return data, nil
 }
 
-func (r *vehicles_service) Add(data *models.Vehicle) (*models.Vehicle, error) {
+func (r *vehicles_service) Add(data *models.Vehicle, filename string) *libs.Response {
+	data.Image = filename
 	data, err := r.repo.Save(data)
 	if data != nil {
 		fmt.Println("Data Berhasil Disimpan")
 	}
 	if err != nil {
-		return nil, err
+		return libs.Respone(err.Error(), 400, true)
 	}
-	return data, nil
+	return libs.Respone(data, 200, false)
 }
+
 func (r *vehicles_service) DeleteData(data *models.Vehicle, params string) (*models.Vehicle, error) {
 	data, err := r.repo.Delete(data, params)
 	if data != nil {
@@ -48,8 +51,8 @@ func (r *vehicles_service) DeleteData(data *models.Vehicle, params string) (*mod
 	return data, nil
 }
 
-func (r *vehicles_service) UpdateData(data *models.Vehicle, params string) (*models.Vehicle, error) {
-	data, err := r.repo.Update(data, params)
+func (r *vehicles_service) UpdateData(data *models.Vehicle, params string, filename string) (*models.Vehicle, error) {
+	data, err := r.repo.Update(data, params, filename)
 	if data != nil {
 		fmt.Println("Data Terupdate")
 	}
@@ -94,6 +97,3 @@ func (r *vehicles_service) PopularVehicles() (*models.Vehicles, error) {
 	}
 	return data, nil
 }
-
-// berinteraksi dengan repo dan controller
-// berisi logic bisnis
