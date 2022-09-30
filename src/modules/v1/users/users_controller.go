@@ -10,7 +10,6 @@ import (
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
 	"github.com/hendralatumeten/vehicles_rental/src/libs"
-	"github.com/hendralatumeten/vehicles_rental/src/responses"
 )
 
 //menghandle Request
@@ -37,9 +36,8 @@ func (re *users_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		libs.Respone(err, 500, true)
 		return
-	} else {
-		responses.JSON(w, http.StatusOK, &data)
 	}
+	libs.Respone(data, 200, false).Send(w)
 
 }
 

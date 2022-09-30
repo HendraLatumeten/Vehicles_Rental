@@ -10,7 +10,6 @@ import (
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
 	"github.com/hendralatumeten/vehicles_rental/src/libs"
-	"github.com/hendralatumeten/vehicles_rental/src/responses"
 )
 
 // berinterakti dengan service dan router
@@ -96,9 +95,10 @@ func (re *vehicles_ctrl) Sort(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)["params"]
 	data, err := re.svc.SortData(params)
 	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
+		libs.Respone(err, 400, true)
+		return
 	} else {
-		responses.JSON(w, http.StatusOK, &data)
+		libs.Respone(data, 200, false).Send(w)
 	}
 }
 func (re *vehicles_ctrl) Search(w http.ResponseWriter, r *http.Request) {
