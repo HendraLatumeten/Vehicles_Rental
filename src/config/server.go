@@ -37,4 +37,5 @@ func server(cmd *cobra.Command, args []string) error {
 	} else {
 		return err
 	}
+
 }

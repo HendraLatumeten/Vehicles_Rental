@@ -13,7 +13,7 @@ func TestGetAll(t *testing.T) {
 	service := NewService(&repo)
 
 	var dataMock = models.Users{
-		{Username: "hendra", Role: "admin"},
+		{Username: "admin", Role: "admin"},
 		{Username: "user", Role: "user"},
 	}
 

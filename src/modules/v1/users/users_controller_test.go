@@ -16,32 +16,29 @@ var repos = RepoMock{mock.Mock{}}
 var service = NewService(&repos)
 var ctrl = NewCtrl(service)
 
-var dataMock = models.Users{
-	{Username: "hendra", Role: "admin"},
-	{Username: "user", Role: "user"},
+var dataMock = models.User{
+	Username: "Hendra",
+	Email:    "Hendra@gmail.com",
 }
 
 func TestCtrlGetAll(t *testing.T) {
-
-	//get respon
 	w := httptest.NewRecorder()
 	mux := mux.NewRouter()
 
 	repos.mock.On("FindAll").Return(&dataMock, nil)
-	mux.HandleFunc("/test/user", ctrl.GetAll)
 
-	mux.ServeHTTP(w, httptest.NewRequest("GET", "/test/user", nil))
+	mux.HandleFunc("/test/users", ctrl.GetAll)
 
-	var users models.Users
-	respone := libs.Response{
+	mux.ServeHTTP(w, httptest.NewRequest("GET", "/test/users", nil))
+
+	var users models.User
+	response := libs.Response{
 		Data: &users,
 	}
-
-	if err := json.Unmarshal(w.Body.Bytes(), &respone); err != nil {
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
 		t.Fatal(err)
 	}
 
-	assert.Equal(t, 200, w.Code, "status code must be 200")
-	assert.False(t, respone.IsError, "isError must be false")
-
+	assert.Equal(t, 200, w.Code, "status is not 200")
+	assert.Nil(t, response.IsError, "error is not nil")
 }
