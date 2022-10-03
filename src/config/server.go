@@ -21,7 +21,7 @@ func server(cmd *cobra.Command, args []string) error {
 
 		var addrs string = "0.0.0.0:8080"
 
-		if pr := os.Getenv("APP_PORT"); pr != "" {
+		if pr := os.Getenv("PORT"); pr != "" {
 			addrs = ":" + pr
 		}
 		srv := &http.Server{
@@ -31,7 +31,7 @@ func server(cmd *cobra.Command, args []string) error {
 			IdleTimeout:  time.Second * 60,
 			Handler:      mainRoute,
 		}
-		fmt.Println("Aplication Running")
+		fmt.Println("Aplication run on http://", addrs)
 		srv.ListenAndServe()
 		return nil
 	} else {

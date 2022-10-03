@@ -18,7 +18,7 @@ type UsersRepo interface {
 }
 
 type UsersService interface {
-	GetAll() (*models.Users, error)
+	GetAll() *libs.Response
 	GetByUsername(username string) *libs.Response
 
 	Add(data *models.User, filename string) *libs.Response

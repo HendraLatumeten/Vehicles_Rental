@@ -1,0 +1,1 @@
+web : ./bin/vehicles_rental start

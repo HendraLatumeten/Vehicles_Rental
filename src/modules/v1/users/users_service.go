@@ -13,19 +13,17 @@ type users_service struct {
 	repo interfaces.UsersRepo
 }
 
-func NewService(reps interfaces.UsersRepo) *users_service {
-	return &users_service{reps}
+func NewService(repo interfaces.UsersRepo) *users_service {
+	return &users_service{repo}
 }
 
-func (r *users_service) GetAll() (*models.Users, error) {
+func (r *users_service) GetAll() *libs.Response {
 	data, err := r.repo.FindAll()
-	if data != nil {
-		fmt.Println("Get Data Berhasil")
-	}
+
 	if err != nil {
-		return nil, err
+		return libs.Respone(err, 400, true)
 	}
-	return data, nil
+	return libs.Respone(data, 200, false)
 }
 
 func (r *users_service) GetByUsername(username string) *libs.Response {
@@ -38,8 +36,6 @@ func (r *users_service) GetByUsername(username string) *libs.Response {
 }
 
 func (r *users_service) Add(data *models.User, filename string) *libs.Response {
-
-	//fmt.Println(data.Username)
 
 	if check := r.repo.UserExsist(data.Username, data.Email); check {
 		return libs.Respone("username atau email sudah terdaftar", 400, true)
