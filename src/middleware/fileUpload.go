@@ -56,7 +56,7 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 			libs.Respone(err.Error(), 400, true)
 			return
 		}
-
+		//test
 		ctx := context.WithValue(r.Context(), "image", filename)
 		next.ServeHTTP(w, r.WithContext(ctx))
 
