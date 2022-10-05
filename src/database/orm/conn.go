@@ -18,7 +18,7 @@ func New() (*gorm.DB, error) {
 	}
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
+	password := os.Getenv("DB_PASS")
 	dbname := os.Getenv("DB_NAME")
 
 	config := fmt.Sprintf("host=%s user=%s password=%s dbname=%s", host, user, password, dbname)
