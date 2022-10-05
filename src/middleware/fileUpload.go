@@ -45,7 +45,7 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		//fileLocation := filepath.Join(dir, "../bin/vehicles_rental/image", filename)
-		fileDestination, err := os.Create("images/" + filename)
+		fileDestination, err := os.Create("src/images/" + filename)
 		if err != nil {
 			libs.Respone(err.Error(), 400, true)
 			return
