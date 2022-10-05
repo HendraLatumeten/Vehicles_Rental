@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -30,7 +29,6 @@ func server(cmd *cobra.Command, args []string) error {
 			IdleTimeout:  time.Minute,
 			Handler:      mainRoute,
 		}
-		fmt.Println("Gorent is running on PORT", pr)
 		srv.ListenAndServe()
 		return nil
 	} else {
