@@ -29,11 +29,6 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		defer uploadedFile.Close()
-		dir, err := os.Getwd()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
 
 		dt := time.Now()
 		filename := dt.Format("15:04:05") + "_" + handler.Filename
@@ -49,16 +44,15 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		fileLocation := filepath.Join(dir, "../bin/vehicles_rental/image", filename)
+		//	fileLocation := filepath.Join(dir, "../bin/vehicles_rental/image", filename)
+		fileLocation, errs := os.Create("image/" + filename)
 
-		targetFile, err := os.OpenFile(fileLocation, os.O_WRONLY|os.O_CREATE, 0666)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		if errs != nil {
+			libs.Respone("failed create file", 400, true).Send(w)
 			return
 		}
-		defer targetFile.Close()
 
-		if _, err := io.Copy(targetFile, uploadedFile); err != nil {
+		if _, err := io.Copy(fileLocation, uploadedFile); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
