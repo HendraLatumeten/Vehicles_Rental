@@ -1,1 +1,1 @@
-web : ./bin/vehicles_rental start
+web: ./bin/vehicles_rental start
