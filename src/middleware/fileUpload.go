@@ -45,15 +45,15 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		//fileLocation := filepath.Join(dir, "../bin/vehicles_rental/image", filename)
-		fileLocation, errs := os.Create("image/" + filename)
-
-		if errs != nil {
-			libs.Respone("failed create file", 400, true).Send(w)
+		fileDestination, err := os.Create("images/" + filename)
+		if err != nil {
+			libs.Respone(err.Error(), 400, true)
 			return
 		}
 
-		if _, err := io.Copy(fileLocation, uploadedFile); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		_, err = io.Copy(fileDestination, uploadedFile)
+		if err != nil {
+			libs.Respone(err.Error(), 400, true)
 			return
 		}
 
