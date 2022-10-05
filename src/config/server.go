@@ -18,10 +18,10 @@ var ServeCmd = &cobra.Command{
 
 func server(cmd *cobra.Command, args []string) error {
 	if mainRoute, err := routers.New(); err == nil {
-		var addrs string = "127.0.0.1"
+		var addrs string = "0.0.0.0:8080"
 
-		if pr := os.Getenv("APP_PORT"); pr != "" {
-			addrs = ":" + pr
+		if pr := os.Getenv("PORT"); pr != "" {
+			addrs = "0.0.0.0:" + pr
 		}
 		srv := &http.Server{
 			Addr:         addrs,
@@ -30,7 +30,6 @@ func server(cmd *cobra.Command, args []string) error {
 			IdleTimeout:  time.Minute,
 			Handler:      mainRoute,
 		}
-		pr := os.Getenv("APP_PORT")
 		fmt.Println("Gorent is running on PORT", pr)
 		srv.ListenAndServe()
 		return nil
