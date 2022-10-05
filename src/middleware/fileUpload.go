@@ -45,9 +45,14 @@ func FileUpload(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		//fileLocation := filepath.Join(dir, "../bin/vehicles_rental/image", filename)
-		fileDestination, err := os.Create("src/images/" + filename)
+		err = os.MkdirAll("./images", os.ModePerm)
 		if err != nil {
-			libs.Respone(err.Error(), 400, true)
+			libs.Respone("error build file location", 401, true).Send(w)
+			return
+		}
+		fileDestination, err := os.Create(filename)
+		if err != nil {
+			libs.Respone("error while upload file", 401, true).Send(w)
 			return
 		}
 
