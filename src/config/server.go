@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -29,6 +30,7 @@ func server(cmd *cobra.Command, args []string) error {
 			IdleTimeout:  time.Minute,
 			Handler:      mainRoute,
 		}
+		fmt.Println("run on", addrs)
 		srv.ListenAndServe()
 		return nil
 	} else {
