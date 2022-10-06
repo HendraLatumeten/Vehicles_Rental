@@ -34,6 +34,7 @@ func (re *vehicles_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "multipart/form-data")
 	var decode = schema.NewDecoder()
 	var datas models.Vehicle
 
@@ -66,7 +67,7 @@ func (re *vehicles_ctrl) Delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *vehicles_ctrl) Update(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-type", "multipart/form-data")
 	vehiclesId := mux.Vars(r)["vehicles_id"]
 	var decode = schema.NewDecoder()
 	var datas models.Vehicle
