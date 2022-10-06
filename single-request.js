@@ -23,7 +23,7 @@ export const options = {
 export default function () {
   // our HTTP request, note that we are saving the response to res, which can be accessed later
 
-  const res = http.get('https://gobackenddua.herokuapp.com/product/');
+  const res = http.get('https://vehicles-rent.herokuapp.com/users/');
 
   sleep(1);
 

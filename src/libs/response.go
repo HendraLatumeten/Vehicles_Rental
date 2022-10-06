@@ -14,7 +14,8 @@ type Response struct {
 }
 
 func (res *Response) Send(w http.ResponseWriter) {
-	w.Header().Set("Content-type", "multipart/form-data")
+	//w.Header().Set("Content-type", "multipart/form-data")
+	w.Header().Set("Content-type", "application/json")
 
 	if res.IsError {
 		w.WriteHeader(res.Code)
