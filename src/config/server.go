@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/hendralatumeten/vehicles_rental/src/routers"
+	"github.com/rs/cors"
 	"github.com/spf13/cobra"
 )
 
@@ -23,14 +24,16 @@ func server(cmd *cobra.Command, args []string) error {
 		if pr := os.Getenv("PORT"); pr != "" {
 			addrs = "0.0.0.0:" + pr
 		}
+		t := cors.AllowAll()
 		srv := &http.Server{
 			Addr:         addrs,
 			WriteTimeout: time.Second * 15,
 			ReadTimeout:  time.Second * 15,
 			IdleTimeout:  time.Minute,
-			Handler:      mainRoute,
+			Handler:      t.Handler(mainRoute),
 		}
 		fmt.Println("run on", addrs)
+
 		srv.ListenAndServe()
 		return nil
 	} else {
