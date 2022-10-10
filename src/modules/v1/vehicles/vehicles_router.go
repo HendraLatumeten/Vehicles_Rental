@@ -17,7 +17,8 @@ func New(rt *mux.Router, db *gorm.DB) {
 	ctrl := NewCtrl(svc)
 	route.HandleFunc("/", ctrl.GetAll).Methods("GET")
 
-	route.HandleFunc("/save", middleware.HandlerChain(middleware.CheckAuth("admin"), middleware.FileUpload).Then(ctrl.Add)).Methods("POST")
+	// route.HandleFunc("/save", middleware.HandlerChain(middleware.CheckAuth("admin"), middleware.FileUpload).Then(ctrl.Add)).Methods("POST")
+	route.HandleFunc("/save", middleware.HandlerChain(middleware.CheckAuth("admin")).Then(ctrl.Add)).Methods("POST")
 	route.HandleFunc("/delete/{vehicles_id}", middleware.HandlerChain(middleware.CheckAuth("admin")).Then(ctrl.Delete)).Methods("DELETE")
 	route.HandleFunc("/update/{vehicles_id}", middleware.HandlerChain(middleware.CheckAuth("admin"), middleware.FileUpload).Then(ctrl.Update)).Methods("PUT")
 	//sort and search
