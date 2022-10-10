@@ -21,7 +21,8 @@ type UsersService interface {
 	GetAll() *libs.Response
 	GetByUsername(username string) *libs.Response
 
-	Add(data *models.User, filename string) *libs.Response
+	//Add(data *models.User, filename string) *libs.Response
+	Add(data *models.User) *libs.Response
 	DeleteData(data *models.User, params string) (*models.User, error)
 	UpdateData(data *models.User, params string, filename string) *libs.Response
 	//UpdateData(data *models.User, params string) (*models.User, error)

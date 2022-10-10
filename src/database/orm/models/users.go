@@ -12,7 +12,7 @@ type User struct {
 	Address       string    `json:"address"`
 	Phone_number  uint      `gorm:"type:int;not null" json:"phone_number"`
 	Date_of_birth string    `gorm:"type:varchar;not null" json:"date_of_birth"`
-	Image         string    `gorm:"type:varchar;not null" json:"image"`
+	Image         string    `gorm:"type:varchar" json:"image"`
 	Create_at     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	Updated_at    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
