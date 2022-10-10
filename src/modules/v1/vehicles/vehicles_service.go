@@ -28,8 +28,8 @@ func (r *vehicles_service) GetAll() (*models.Vehicles, error) {
 	return data, nil
 }
 
-func (r *vehicles_service) Add(data *models.Vehicle, filename string) *libs.Response {
-	data.Image = filename
+func (r *vehicles_service) Add(data *models.Vehicle) *libs.Response {
+	// data.Image = filename
 	data, err := r.repo.Save(data)
 	if data != nil {
 		fmt.Println("Data Berhasil Disimpan")

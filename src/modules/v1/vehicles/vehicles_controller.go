@@ -39,8 +39,8 @@ func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 	var datas models.Vehicle
 
 	//convert context to string
-	var x interface{} = r.Context().Value("image")
-	filename := fmt.Sprintf("%v", x)
+	// var x interface{} = r.Context().Value("image")
+	// filename := fmt.Sprintf("%v", x)
 
 	err := r.ParseMultipartForm(32 << 20)
 	if err != nil {
@@ -48,7 +48,7 @@ func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	decode.Decode(&datas, r.Form)
-	re.svc.Add(&datas, filename).Send(w)
+	re.svc.Add(&datas).Send(w)
 
 }
 

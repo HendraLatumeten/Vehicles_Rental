@@ -17,7 +17,7 @@ type VehiclesRepo interface {
 
 type VehiclesService interface {
 	GetAll() (*models.Vehicles, error)
-	Add(data *models.Vehicle, filename string) *libs.Response
+	Add(data *models.Vehicle) *libs.Response
 	DeleteData(data *models.Vehicle, params string) (*models.Vehicle, error)
 	UpdateData(data *models.Vehicle, params string, filename string) (*models.Vehicle, error)
 	SortData(parmas string) (*models.Vehicles, error)
