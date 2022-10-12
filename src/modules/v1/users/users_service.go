@@ -41,11 +41,16 @@ func (r *users_service) Add(data *models.User) *libs.Response {
 		return libs.Respone("username atau email sudah terdaftar", 400, true)
 	}
 
+	fileURL, err := libs.CloudUpload(data.Image)
+	if err != nil {
+		return libs.Respone(err.Error(), 500, true)
+	}
+
 	hassPaasword, err := libs.HashPassword(data.Password)
 	if err != nil {
 		return libs.Respone(err.Error(), 400, true)
 	}
-
+	data.Image = fileURL
 	data.Password = hassPaasword
 
 	result, err := r.repo.Save(data)

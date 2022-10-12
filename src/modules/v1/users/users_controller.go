@@ -62,20 +62,29 @@ func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 
 func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "multipart/form-data")
-	var decode = schema.NewDecoder()
+	var decoder = schema.NewDecoder()
 	var datas models.User
 
-	//convert context to string
-	// var x interface{} = r.Context().Value("image")
-	// filename := fmt.Sprintf("%v", x)
-
-	err := r.ParseMultipartForm(32 << 20)
+	err := r.ParseForm()
 	if err != nil {
 		libs.Respone(err, 500, true)
 		return
 	}
-	decode.Decode(&datas, r.Form)
+
+	err = decoder.Decode(&datas, r.PostForm)
+	if err != nil {
+		libs.Respone(err, 500, true)
+		return
+	}
+	uploads := r.Context().Value("file")
+	if uploads != nil {
+		datas.Image = uploads.(string)
+	}
+
+	if err != nil {
+		libs.Respone(err, 500, true)
+		return
+	}
 	re.svc.Add(&datas).Send(w)
-	// re.svc.Add(&datas, filename).Send(w)
 
 }
