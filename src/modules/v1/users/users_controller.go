@@ -80,7 +80,7 @@ func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 	if uploads != nil {
 		datas.Image = uploads.(string)
 	}
-
+	fmt.Println(uploads)
 	if err != nil {
 		libs.Respone(err, 500, true)
 		return
