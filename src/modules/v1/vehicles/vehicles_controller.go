@@ -33,6 +33,17 @@ func (re *vehicles_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (re *vehicles_ctrl) GetById(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)["vehicles_id"]
+	data, err := re.svc.GetId(params)
+	if err != nil {
+		libs.Respone(err, 400, true)
+		return
+	}
+	libs.Respone(data, 200, false).Send(w)
+
+}
+
 func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 	var decoder = schema.NewDecoder()
 	var datas models.Vehicle

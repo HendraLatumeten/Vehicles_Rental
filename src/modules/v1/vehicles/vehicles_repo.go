@@ -30,6 +30,17 @@ func (r *vehicles_repo) FindAll() (*models.Vehicles, error) {
 	return &data, nil
 }
 
+func (r *vehicles_repo) FindById(params string) (*models.Vehicles, error) {
+	var data models.Vehicles
+
+	result := r.db.Find(&data).Where(params)
+	if result.Error != nil {
+		return nil, errors.New("gagal mengambil data")
+	}
+
+	return &data, nil
+}
+
 func (r *vehicles_repo) Save(data *models.Vehicle) (*models.Vehicle, error) {
 
 	result := r.db.Create(data)
@@ -41,14 +52,6 @@ func (r *vehicles_repo) Save(data *models.Vehicle) (*models.Vehicle, error) {
 }
 
 func (r *vehicles_repo) Delete(data *models.Vehicle, params string) (*models.Vehicle, error) {
-	//delete file
-	// r.db.First(&data, "vehicles_id = ?", params)
-	// path := "./image/" + data.Image
-	// err := os.Remove(path)
-	// if err != nil {
-	// 	return nil, errors.New("file tidak ada")
-	// }
-
 	result := r.db.Where("vehicles_id", params).Delete(&data)
 	if result.Error != nil {
 		return nil, errors.New("gagal Menghapus data")

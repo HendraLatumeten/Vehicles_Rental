@@ -24,6 +24,7 @@ func New(rt *mux.Router, db *gorm.DB) {
 
 	route.HandleFunc("/sort/{params}", ctrl.Sort).Methods("GET")
 	route.HandleFunc("/search/{params}", ctrl.Search).Methods("GET")
+	route.HandleFunc("/getBy/{params}", ctrl.GetById).Methods("GET")
 	//popular vehicles
 	route.HandleFunc("/popular", ctrl.PopularVehicles).Methods("GET")
 

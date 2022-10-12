@@ -7,6 +7,7 @@ import (
 
 type VehiclesRepo interface {
 	FindAll() (*models.Vehicles, error)
+	FindById(params string) (*models.Vehicles, error)
 	Save(data *models.Vehicle) (*models.Vehicle, error)
 	Delete(data *models.Vehicle, params string) (*models.Vehicle, error)
 	Update(data *models.Vehicle, params string, filename string) (*models.Vehicle, error)
@@ -23,6 +24,7 @@ type VehiclesService interface {
 	SortData(parmas string) (*models.Vehicles, error)
 	SearchData(parmas string) (*models.Vehicles, error)
 	PopularVehicles() (*models.Vehicles, error)
+	GetId(params string) (*models.Vehicles, error)
 }
 
 type UnitTest interface {

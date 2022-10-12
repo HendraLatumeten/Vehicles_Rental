@@ -28,6 +28,17 @@ func (r *vehicles_service) GetAll() (*models.Vehicles, error) {
 	return data, nil
 }
 
+func (r *vehicles_service) GetId(params string) (*models.Vehicles, error) {
+	data, err := r.repo.FindById(params)
+	if data != nil {
+		fmt.Println("Get Data Berhasil")
+	}
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 func (r *vehicles_service) Add(data *models.Vehicle) *libs.Response {
 	// data.Image = filename
 	fileURL, err := libs.CloudUpload(data.Image)
