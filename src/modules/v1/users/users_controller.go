@@ -61,7 +61,7 @@ func (re *users_ctrl) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "multipart/form-data")
+
 	var decoder = schema.NewDecoder()
 	var datas models.User
 
@@ -76,7 +76,7 @@ func (re *users_ctrl) Add(w http.ResponseWriter, r *http.Request) {
 		libs.Respone(err, 500, true)
 		return
 	}
-	uploads := r.Context().Value("file")
+	uploads := r.Context().Value("image")
 	if uploads != nil {
 		datas.Image = uploads.(string)
 	}
