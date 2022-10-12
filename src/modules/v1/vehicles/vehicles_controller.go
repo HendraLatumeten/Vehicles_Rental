@@ -34,7 +34,7 @@ func (re *vehicles_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *vehicles_ctrl) GetById(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)["vehicles_id"]
+	params := mux.Vars(r)["params"]
 	data, err := re.svc.GetId(params)
 	if err != nil {
 		libs.Respone(err, 400, true)
