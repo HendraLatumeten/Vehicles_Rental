@@ -33,7 +33,7 @@ func (r *vehicles_repo) FindAll() (*models.Vehicles, error) {
 func (r *vehicles_repo) FindById(params string) (*models.Vehicles, error) {
 	var data models.Vehicles
 
-	result := r.db.Find(&data).Where(params)
+	result := r.db.First(&data, "vehicles_id = ?", params)
 	if result.Error != nil {
 		return nil, errors.New("gagal mengambil data")
 	}
