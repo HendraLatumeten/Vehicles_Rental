@@ -30,14 +30,20 @@ func (r *vehicles_service) GetAll() (*models.Vehicles, error) {
 
 func (r *vehicles_service) Add(data *models.Vehicle) *libs.Response {
 	// data.Image = filename
-	data, err := r.repo.Save(data)
-	if data != nil {
+	fileURL, err := libs.CloudUpload(data.Image)
+	if err != nil {
+		return libs.Respone(err.Error(), 500, true)
+	}
+
+	data.Image = fileURL
+	result, err := r.repo.Save(data)
+	if result != nil {
 		fmt.Println("Data Berhasil Disimpan")
 	}
 	if err != nil {
 		return libs.Respone(err.Error(), 400, true)
 	}
-	return libs.Respone(data, 200, false)
+	return libs.Respone(result, 200, false)
 }
 
 func (r *vehicles_service) DeleteData(data *models.Vehicle, params string) (*models.Vehicle, error) {

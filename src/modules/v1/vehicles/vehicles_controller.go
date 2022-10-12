@@ -34,20 +34,29 @@ func (re *vehicles_ctrl) GetAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "multipart/form-data")
-	var decode = schema.NewDecoder()
+	var decoder = schema.NewDecoder()
 	var datas models.Vehicle
 
-	//convert context to string
-	// var x interface{} = r.Context().Value("image")
-	// filename := fmt.Sprintf("%v", x)
-
-	err := r.ParseMultipartForm(32 << 20)
+	err := r.ParseForm()
 	if err != nil {
 		libs.Respone(err, 500, true)
 		return
 	}
-	decode.Decode(&datas, r.Form)
+
+	err = decoder.Decode(&datas, r.PostForm)
+	if err != nil {
+		libs.Respone(err, 500, true)
+		return
+	}
+	uploads := r.Context().Value("image")
+	if uploads != nil {
+		datas.Image = uploads.(string)
+	}
+	fmt.Println(uploads)
+	if err != nil {
+		libs.Respone(err, 500, true)
+		return
+	}
 	re.svc.Add(&datas).Send(w)
 
 }
