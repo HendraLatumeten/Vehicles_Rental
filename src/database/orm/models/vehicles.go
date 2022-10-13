@@ -8,6 +8,7 @@ type Vehicle struct {
 	Type_vehicles string    `gorm:"type:varchar;not null" json:"type_vehicles"`
 	City          string    `gorm:"type:varchar;not null" json:"city"`
 	Capacity      int       `gorm:"type:int;not null" json:"capacity"`
+	Price         string    `gorm:"type:int;not null" json:"price"`
 	Image         string    `gorm:"type:varchar;not null" json:"image"`
 	Orders        int       `gorm:"type:int" json:"orders"`
 	Create_at     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
