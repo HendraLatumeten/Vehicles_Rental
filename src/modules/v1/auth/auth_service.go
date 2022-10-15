@@ -39,23 +39,23 @@ func (a auth_service) Login(body models.User) *libs.Response {
 	return libs.Respone(token_respone{Tokens: TokenCreate}, 200, false)
 }
 
-func (a auth_service) Register(body models.User) *libs.Response {
-	//get user database
-	user, err := a.repo.FindByUsername(body.Username)
-	if err != nil {
-		return libs.Respone(err.Error(), 401, true)
+func (a auth_service) Register(data models.User) *libs.Response {
+
+	if check := a.repo.UserExsist(data.Username, data.Email); check {
+		return libs.Respone("username atau email sudah terdaftar", 400, true)
 	}
 
-	//password check
-	if !libs.CheckPassword(user.Password, body.Password) {
-		return libs.Respone("Password salah", 401, true)
+	hassPaasword, err := libs.HashPassword(data.Password)
+	if err != nil {
+		return libs.Respone(err.Error(), 400, true)
 	}
 
-	//create Token
-	token := libs.NweToken(body.Username, user.Role)
-	TokenCreate, err := token.Create()
+	data.Password = hassPaasword
+
+	result, err := a.repo.Save(&data)
 	if err != nil {
-		return libs.Respone(err.Error(), 401, true)
+		return libs.Respone(err.Error(), 400, true)
 	}
-	return libs.Respone(token_respone{Tokens: TokenCreate}, 200, false)
+
+	return libs.Respone(result, 200, false)
 }
