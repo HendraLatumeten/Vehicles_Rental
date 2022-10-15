@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/gorilla/schema"
 	"github.com/hendralatumeten/vehicles_rental/src/database/orm/models"
 	"github.com/hendralatumeten/vehicles_rental/src/interfaces"
 	"github.com/hendralatumeten/vehicles_rental/src/libs"
@@ -28,15 +27,12 @@ func (a *auth_ctrl) Signin(w http.ResponseWriter, r *http.Request) {
 	a.rep.Login(data).Send(w)
 }
 func (a *auth_ctrl) SignUp(w http.ResponseWriter, r *http.Request) {
-	var decoder = schema.NewDecoder()
-	var datas models.User
+	var data models.User
 
-	err := r.ParseForm()
+	err := json.NewDecoder(r.Body).Decode(&data)
 	if err != nil {
-		libs.Respone(err, 500, true)
-		return
+		libs.Respone(err.Error(), 401, true)
 	}
 
-	err = decoder.Decode(&datas, r.PostForm)
-	a.rep.Register(datas).Send(w)
+	a.rep.Register(data).Send(w)
 }
