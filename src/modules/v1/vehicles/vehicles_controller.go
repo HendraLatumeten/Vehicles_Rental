@@ -45,8 +45,6 @@ func (re *vehicles_ctrl) GetById(w http.ResponseWriter, r *http.Request) {
 }
 
 func (re *vehicles_ctrl) Add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type", "multipart/form-data")
-
 	var decoder = schema.NewDecoder()
 	var datas models.Vehicle
 
